@@ -11,55 +11,54 @@
 
 
 
-The beta (in-development) site for webcomponents.org.
+web components.org的beta（开发中）网站。
+它由多个Appengine服务组成，需要gcloud进行大多数开发.
 
-It consists of multiple Appengine services and requires gcloud for most development.
+在高层次，服务是
+- 管理，一个Python服务，处理来自Bower，Github和Analysis的摄取数据的管理。
+- Api，一种Python服务，提供客户端使用的REST API，以从Manage访问数据。
+- 客户端，Polymer Web应用程序，它提供用户界面并消耗Api的数据。
+- Analysis，一个node.js服务，使用Bower和Hydrolysis对所摄取的元素执行较慢的分析。
 
-At a high-level, the services are
-- Manage, a Python service dealing with ingestion and management of ingested data from Bower, Github and Analysis.
-- Api, a Python service providing a REST api used by Client to access data from Manage.
-- Client, a Polymer web app that provides the user interface and consumes data from Api.
-- Analysis, a node.js service that performs slower analysis on ingested elements, using Bower and Hydrolysis.
+＃系统级依赖
+需要以下依赖关系来开发，测试和/或部署beta.webcomponents.org
+- 所有服务都需要gcloud SDK（https://cloud.google.com/sdk/downloads#versioned）
+- node.js（和npm）（https://nodejs.org/en/download/） - 所有服务都需要
+- pip（Linux：https://packaging.python.org/install_requirements_linux/，Mac：“sudo easy_install pip”或https://pip.pypa.io/en/stable/installing/） - 需要管理和Api
+- bower（“npm install -g bower”） - 客户端需要
+- grunt（“npm install -g grunt”） - 运行lint所需的
 
-# System-level dependencies
-The following dependencies are required to develop, test and/or deploy beta.webcomponents.org
-- gcloud SDK (https://cloud.google.com/sdk/downloads#versioned) - needed for ALL services
-- node.js (and npm) (https://nodejs.org/en/download/) - needed for ALL services
-- pip (Linux: https://packaging.python.org/install_requirements_linux/, Mac: "sudo easy_install pip" or https://pip.pypa.io/en/stable/installing/) - needed for Manage and Api
-- bower ("npm install -g bower") - needed for Client
-- grunt ("npm install -g grunt") - needed for running lint
-
-# Dependencies
+#  依赖
 ```bash
 npm install
 ```
-Alternatively, you can use yarn for faster builds:
+或者，您可以使用纱线更快的构建:
 ```bash
 yarn
 ```
 
-## Client & analysis
-For instructions, view their sub-directories `client/` and `analysis/`.
+## 客户和分析
+有关说明，请查看其子目录 `client/` and `analysis/`.
 
-## Running tests
+## 运行测试
 ```bash
 python tests.py $APPENGINE_SDK
 ```
 
-## Deployment
-To increase Github API quota, acqure a Github token and store it:
+## 部署
+要增加Github API配额，获取一个Github令牌并存储它:
 ```bash
 cat > secrets.yaml
 github_token: 'your-github-token'
 ```
 
-If you would like to use reCAPTCHA, obtain a token and store it:
+如果您想使用reCAPTCHA，请获取令牌并存储它:
 ```bash
 cat > secrets.yaml
 recaptcha: 'your-token'
 ```
 
-Deploy to staging.
+部署到暂存.
 ```bash
 grunt lint #lints both client and python
 appcfg.py update_dispatch dispatch.yaml
@@ -67,4 +66,4 @@ appcfg.py update manage.yaml
 appcfg.py update api.yaml
 ```
 
-Deploy client & analysis per their documentation.
+根据他们的文档部署客户端和分析.
